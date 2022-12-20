@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
+import { createTheme } from "@mui/material/styles";
 import * as MUi from "@mui/material";
 //   Avatar,
 //   Button,
@@ -20,6 +21,12 @@ const defaultUser = {
   password: "",
 };
 
+const theme = createTheme({
+  typography: {
+    fontSize: 12,
+  },
+});
+
 const paperStyle = {
   padding: 20,
   minHeight: "40vh",
@@ -28,29 +35,27 @@ const paperStyle = {
 
 function Login() {
   const [user, setUser] = useState(defaultUser);
+  const [errorMessage, setErrorMessage] = useState(undefined);
   const navigate = useNavigate();
   const { loginUser } = useContext(UserContext);
 
   const sendToServer = async () => {
     try {
-      const result = await axios.post(
-        SERVER_ORIGIN + "/users/login",
-        JSON.stringify(user),
-        {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const result = await axios.post(SERVER_ORIGIN + "/users/login", JSON.stringify(user), {
+        withCredentials: true,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      });
       const data = await result.data;
       console.log(data);
 
       loginUser(data);
       navigate("/profile");
     } catch (error) {
-      console.log(error);
+      const errorDescription = error.response.data.message;
+      setErrorMessage(errorDescription);
     }
     setUser(defaultUser);
   };
@@ -108,6 +113,11 @@ function Login() {
                   value={user.password}
                 />
               </MUi.FormControl>
+              {errorMessage && (
+                <MUi.Typography fontSize="12" color="red">
+                  {errorMessage}
+                </MUi.Typography>
+              )}
 
               <MUi.Button
                 variant="contained"
