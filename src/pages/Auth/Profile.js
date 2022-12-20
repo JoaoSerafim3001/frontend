@@ -2,12 +2,19 @@ import { SERVER_ORIGIN } from "../../consts.js";
 import { Button, FormControl, Grid, Input, InputLabel, Paper } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 
 function Profile() {
   const { user, logoutUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      // return null;
+    }
+  });
 
   const logout = async () => {
     try {
@@ -32,10 +39,6 @@ function Profile() {
     margin: "10px auto",
   };
 
-  // if (!user) {
-  //   navigate("/login");
-  //   return null;
-  // }
   return (
     <Grid display="flex" alignItems="center" justifyContent="center" minHeight={"100%"} margin="0">
       <Paper elevation={3} style={paperStyle}>
