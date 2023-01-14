@@ -68,7 +68,7 @@ function Cart({ productsInCart, setProductsInCart }) {
                         justifyContent="center"
                         alignContent="center"
                       >
-                        <img src={elem.product.image} alt={elem.product.name} width="150" />
+                        <img src={elem.image} alt={elem.name} width="150" />
                       </Grid>
                       <Grid
                         item
@@ -81,7 +81,7 @@ function Cart({ productsInCart, setProductsInCart }) {
                         justifyContent="center"
                         alignContent="center"
                       >
-                        <Typography variant="inherit">{elem.product.name}</Typography>
+                        <Typography variant="inherit">{elem.name}</Typography>
                       </Grid>
                       <Grid
                         item

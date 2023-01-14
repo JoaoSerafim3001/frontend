@@ -12,12 +12,14 @@ import {
 } from "@mui/material";
 import "../pages/Store/store.css";
 import axios from "axios";
-import { SERVER_ORIGIN } from "../consts";
+import { useEffect, useState } from "react";
 
 function List({ products, setProductsInCart, productsInCart }) {
+  const [productToCart, setProductToCart] = useState({});
+
   const handleClick = async (e) => {
     e.preventDefault();
-    const addedProduct = { product: e.currentTarget.id };
+    const addedProduct = e.currentTarget.id;
     console.log("AP", addedProduct);
     const resp = await axios.post(SERVER_ORIGIN + "/cart", addedProduct, {
       withCredentials: true,
